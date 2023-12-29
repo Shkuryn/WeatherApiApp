@@ -3,7 +3,7 @@
 class AccuweatherService
   BASE_URL = 'https://dataservice.accuweather.com'
   API_KEY = ENV.fetch('ACCUWEATHER_API_KEY')
-  LOCATION_KEY = ENV.fetch('LOCATION_KEY') ||'28580' # Minsk
+  LOCATION_KEY = ENV.fetch('LOCATION_KEY') || '28580' # Minsk
 
   def self.call
     new.call
@@ -24,6 +24,6 @@ class AccuweatherService
   end
 
   def response
-    @parsed_response ||= HTTParty.get(api_url, query: { apikey: API_KEY }).parsed_response
+    @response ||= HTTParty.get(api_url, query: { apikey: API_KEY }).parsed_response
   end
 end
