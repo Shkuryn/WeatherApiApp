@@ -41,9 +41,10 @@ gem "tzinfo-data", platforms: %i[ mswin mswin64 mingw x64_mingw jruby ]
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
-gem 'grape'
-gem 'grape-entity'
+gem 'grape', '~> 1.7'
+# gem 'grape-entity'
 gem 'grape-swagger'
+
 gem 'dotenv-rails'
 gem 'httparty'
 gem 'rufus-scheduler', '~> 3.2'
