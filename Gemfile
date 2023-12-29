@@ -46,6 +46,7 @@ gem 'grape-entity'
 gem 'grape-swagger'
 gem 'dotenv-rails'
 gem 'httparty'
+gem 'rufus-scheduler', '~> 3.2'
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
