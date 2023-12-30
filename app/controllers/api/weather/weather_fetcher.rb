@@ -6,6 +6,7 @@ module API
         desc 'Returns current temperature.'
         get :current do
           { now: -10.7 }
+          # Rails.cache.read('1703955420')
         end
         namespace 'historical' do
 
@@ -15,10 +16,13 @@ module API
               '02:00': '-10.8' }
           end
           get :min do
-            { 'min': '-100' }
+            { 'min': WeatherHistoricalService.new.aggregate_temperature(:min) }
           end
           get :max do
-            { 'max': '100' }
+            { 'max': WeatherHistoricalService.new.aggregate_temperature(:max) }
+          end
+          get :avg do
+            { 'average': WeatherHistoricalService.new.aggregate_temperature(:average) }
           end
         end
       end

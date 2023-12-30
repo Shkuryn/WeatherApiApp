@@ -4,11 +4,12 @@
 #
 # Table name: forecasts
 #
-#  id          :integer          not null, primary key
-#  epoch_time  :datetime
-#  temperature :decimal(, )
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  id               :integer          not null, primary key
+#  epoch_time       :integer
+#  observation_time :datetime
+#  temperature      :decimal(, )
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
 #
 class Forecast < ApplicationRecord
 end
