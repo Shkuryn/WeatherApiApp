@@ -96,4 +96,8 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  config.cache_store = :mem_cache_store, 'localhost', { namespace: 'weather_api_app', compress: true }
+  config.action_controller.perform_caching = true
+
 end
