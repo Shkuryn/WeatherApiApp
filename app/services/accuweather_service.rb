@@ -11,12 +11,13 @@ class AccuweatherService
 
   def call
     response.each do |weather|
-      epoch_time = Time.at(weather['EpochTime'])
+      epoch_time = (Time.at(weather['EpochTime']).beginning_of_hour + 1.hour).to_i
+      observation_time = Time.parse(weather['LocalObservationDateTime']).to_datetime.beginning_of_hour + 1.hour
       temperature =  weather.dig('Temperature', 'Metric', 'Value')
       Forecast
         .find_or_initialize_by(epoch_time: epoch_time)
-        .update(temperature: temperature)
-      write_to_cache(epoch_time, temperature)
+        .update(temperature: temperature, observation_time: observation_time)
+      Rails.cache.write(epoch_time.to_i, temperature)
     end
   end
 
@@ -28,9 +29,5 @@ class AccuweatherService
 
   def response
     @response ||= HTTParty.get(api_url, query: { apikey: API_KEY }).parsed_response
-  end
-
-  def write_to_cache(epoch_time, temperature)
-    Rails.cache.write(epoch_time.to_i, temperature)
   end
 end

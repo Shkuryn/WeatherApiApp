@@ -5,20 +5,35 @@ module API
 
         desc 'Returns current temperature.'
         get :current do
-          { now: -10.7 }
+          WeatherHistoricalService.new.last(1)
         end
+
+        desc 'find closest temperature by passed timestamp'
+        params do
+          requires :timestamp, type: Integer, desc: 'Timestamp to find temperature'
+        end
+        get 'by_time' do
+          timestamp = Time.at(params[:timestamp])
+
+          closest_temperature = Forecast.where('observation_time <= ?', timestamp).order(observation_time: :desc).first
+          error!('Temperature not found', 404) unless closest_temperature
+
+          { temperature: closest_temperature.temperature }
+        end
+
         namespace 'historical' do
 
           get do
-            { '00:00': '-10.7',
-              '01:00': '-10.7',
-              '02:00': '-10.8' }
+           WeatherHistoricalService.new.last(24)
           end
           get :min do
-            { 'min': '-100' }
+            { 'min': WeatherHistoricalService.new.aggregate_temperature(:min) }
           end
           get :max do
-            { 'max': '100' }
+            { 'max': WeatherHistoricalService.new.aggregate_temperature(:max) }
+          end
+          get :avg do
+            { 'average': WeatherHistoricalService.new.aggregate_temperature(:avg) }
           end
         end
       end

@@ -45,6 +45,8 @@ gem 'bootsnap', require: false
 
 
 gem 'grape', '~> 1.7'
+gem 'grape_on_rails_routes', '~> 0.3.2'
+gem 'grape-rabl'
 gem 'grape-swagger'
 gem 'dotenv-rails'
 
