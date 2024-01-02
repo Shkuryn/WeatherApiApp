@@ -8,7 +8,7 @@ module API
           WeatherHistoricalService.new.last(1)
         end
 
-        desc 'Найти температуру ближайшую к переданному timestamp'
+        desc 'find closest temperature by passed timestamp'
         params do
           requires :timestamp, type: Integer, desc: 'Timestamp to find temperature'
         end
