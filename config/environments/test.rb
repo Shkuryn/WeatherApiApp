@@ -65,4 +65,6 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.cache_store = :mem_cache_store, 'localhost', { namespace: 'weather_api_app', compress: true }
+
+  OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 end
