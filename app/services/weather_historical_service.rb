@@ -7,7 +7,9 @@ class WeatherHistoricalService
     raise ArgumentError, 'Invalid operation' unless valid_operation?(operation)
 
     temperature = Forecast.where('observation_time >= ?', INTERVAL.ago).pluck(:temperature).send(operation)
-    temperature || raise(ActiveRecord::RecordNotFound, "#{operation.capitalize} temperature not found!")
+    raise(ActiveRecord::RecordNotFound, "#{operation.capitalize} temperature not found!") if temperature.nil? || temperature.nan?
+
+    temperature
   end
 
   def last(count_hours)
