@@ -3,7 +3,7 @@
 class AccuweatherService
   BASE_URL = 'https://dataservice.accuweather.com'
   API_KEY = ENV.fetch('ACCUWEATHER_API_KEY')
-  LOCATION_KEY = ENV.fetch('LOCATION_KEY') || '28580' # Minsk
+  LOCATION_KEY = ENV.fetch('LOCATION_KEY', '28580')# Minsk
 
   def self.call
     new.call
@@ -16,7 +16,7 @@ class AccuweatherService
       temperature =  weather.dig('Temperature', 'Metric', 'Value')
       Forecast
         .find_or_initialize_by(epoch_time: epoch_time)
-        .update(temperature: temperature, observation_time: observation_time)
+        .update!(temperature: temperature, observation_time: observation_time)
       Rails.cache.write(epoch_time.to_i, temperature)
     end
   end
