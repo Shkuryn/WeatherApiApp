@@ -12,8 +12,10 @@ RSpec.describe AccuweatherService do
       end
 
       context 'when data exist', :aggregate_failures do
-        let!(:forecast1) { FactoryBot.create(:forecast, epoch_time: 1704200280, temperature: 10) }
-        let!(:forecast2) { FactoryBot.create(:forecast, epoch_time: 1704146220, temperature: 15) }
+        let(:epoch_time_1) { (Time.at(1704146220).beginning_of_hour + 1.hour).to_i }
+        let(:epoch_time_2) { (Time.at(1704214680).beginning_of_hour + 1.hour).to_i }
+        let!(:forecast1) { FactoryBot.create(:forecast, epoch_time: epoch_time_1, temperature: 10) }
+        let!(:forecast2) { FactoryBot.create(:forecast, epoch_time: epoch_time_2, temperature: 15) }
 
         it 'update temperature' do
           expect {
@@ -22,8 +24,8 @@ RSpec.describe AccuweatherService do
             end
           }.to change { Forecast.count }.from(2).to(24)
 
-        expect(Forecast.find_by(epoch_time: 1704200280).temperature).to eq(-9.7)
-        expect(Forecast.find_by(epoch_time:   ).temperature).to eq(-5.4)
+        expect(Forecast.find_by(epoch_time: epoch_time_1).temperature).to eq(-5.4)
+        expect(Forecast.find_by(epoch_time: epoch_time_2).temperature).to eq(-10.5)
         end
       end
     end
