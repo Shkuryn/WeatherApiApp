@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
+# rubocop:disable Metrics/BlockLength
 module API
   module Weather
     class WeatherFetcher < Grape::API
       namespace 'weather' do
-
         desc 'Returns current temperature.'
         get :current do
           WeatherHistoricalService.new.last(1)
@@ -22,9 +24,8 @@ module API
         end
 
         namespace 'historical' do
-
           get do
-           WeatherHistoricalService.new.last(24)
+            WeatherHistoricalService.new.last(24)
           end
           get :min do
             { 'min': WeatherHistoricalService.new.aggregate_temperature(:min) }
@@ -40,3 +41,4 @@ module API
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

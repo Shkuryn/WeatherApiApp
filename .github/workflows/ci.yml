@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2.2
+
+      - name: Bundle install
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Install Bundler
+        run: gem install bundler -v '~>2.4.22'
+
+      - name: Install dependencies
+        run: bundle install
+
+      - name: Run rubocop
+        run: rubocop
+
+      - name: Run RSpec
+        run: bundle exec rspec -fd
+        env:
+          ACCUWEATHER_API_KEY: ${{ secrets.ACCUWEATHER_API_KEY }}
