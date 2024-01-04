@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# rubocop:disable Metrics/BlockLength
 RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/current' do
     let!(:forecast) do
@@ -109,3 +110,4 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
     end
   end
 end
+# rubocop:enable Metrics/BlockLength

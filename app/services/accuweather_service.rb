@@ -9,6 +9,7 @@ class AccuweatherService
     new.call
   end
 
+  # rubocop:disable Metrics/AbcSize
   def call
     response.each do |weather|
       epoch_time = (Time.at(weather['EpochTime']).beginning_of_hour + 1.hour).to_i
@@ -20,6 +21,7 @@ class AccuweatherService
       Rails.cache.write(epoch_time.to_i, temperature)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/BlockLength
 module API
   module Weather
     class WeatherFetcher < Grape::API
@@ -40,3 +41,4 @@ module API
     end
   end
 end
+# rubocop:enable Metrics/BlockLength
