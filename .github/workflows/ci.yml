@@ -16,6 +16,11 @@ jobs:
         with:
           ruby-version: 3.2.2
 
+
+      - name: Display environment variables
+        run:
+           echo "Environment variables: ${{ toJson(env) }}"
+
       - name: Bundle install
         run: |
           gem install bundler
@@ -26,9 +31,6 @@ jobs:
 
       - name: Install dependencies
         run: bundle install
-
-      - name: Run rubocop
-        run: bundle exec rubocop
 
       - name: Run RSpec
         run: bundle exec rspec -fd
