@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/current' do
     let!(:forecast) do
       FactoryBot.create(:forecast,
-                        observation_time: (Time.current).beginning_of_hour,
+                        observation_time: Time.current.beginning_of_hour,
                         temperature: 10)
     end
     it 'returns the current temperature' do
@@ -13,7 +15,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
 
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
-      expect(body).to include(["2024-01-03 17:00", 10.0])
+      expect(body).to include(['2024-01-03 17:00', 10.0])
     end
   end
 
@@ -28,11 +30,11 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
       expect(body).to have_key('temperature')
-      expect(body['temperature']).to eq("15.0")
+      expect(body['temperature']).to eq('15.0')
     end
 
     it 'returns 404 if temperature not found for timestamp' do
-      timestamp = Time.current.to_i - 55000
+      timestamp = Time.current.to_i - 55_000
 
       get "/api/weather/by_time?timestamp=#{timestamp}"
 
@@ -50,7 +52,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
       end
     end
 
-    after { Forecast.destroy_all}
+    after { Forecast.destroy_all }
 
     it 'returns historical temperatures for the last 24 hours', :aggregate_failures do
       get '/api/weather/historical'
@@ -65,7 +67,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/historical/min' do
     let!(:forecast) do
       FactoryBot.create(:forecast,
-                        observation_time: (Time.current).beginning_of_hour,
+                        observation_time: Time.current.beginning_of_hour,
                         temperature: 10)
     end
     it 'returns the minimum temperature of historical data' do
@@ -80,7 +82,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/historical/max' do
     let!(:forecast) do
       FactoryBot.create(:forecast,
-                        observation_time: (Time.current).beginning_of_hour,
+                        observation_time: Time.current.beginning_of_hour,
                         temperature: 10)
     end
     it 'returns the minimum temperature of historical data' do
@@ -95,7 +97,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/historical/max' do
     let!(:forecast) do
       FactoryBot.create(:forecast,
-                        observation_time: (Time.current).beginning_of_hour,
+                        observation_time: Time.current.beginning_of_hour,
                         temperature: 10)
     end
     it 'returns the minimum temperature of historical data' do

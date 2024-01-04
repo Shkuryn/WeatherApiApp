@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'vcr'
 
 VCR.configure do |c|
@@ -8,7 +10,7 @@ VCR.configure do |c|
   c.cassette_library_dir = File.join(
     File.dirname(__FILE__), '..', 'fixtures', 'vcr_cassettes'
   )
-  c.filter_sensitive_data('<ACCUWEATHER_API_KEY>') {
+  c.filter_sensitive_data('<ACCUWEATHER_API_KEY>') do
     ENV.fetch('ACCUWEATHER_API_KEY', 'hidden')
-  }
+  end
 end

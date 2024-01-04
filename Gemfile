@@ -43,12 +43,11 @@ gem 'tzinfo-data', platforms: %i[mswin mswin64 mingw x64_mingw jruby]
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', require: false
 
-
+gem 'dotenv-rails'
 gem 'grape', '~> 1.7'
 gem 'grape_on_rails_routes', '~> 0.3.2'
 gem 'grape-rabl'
 gem 'grape-swagger'
-gem 'dotenv-rails'
 
 gem 'httparty'
 gem 'rufus-scheduler', '~> 3.2'
@@ -63,9 +62,9 @@ group :development, :test do
   gem 'annotate'
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem 'debug', platforms: %i[mri mswin mswin64 mingw x64_mingw]
-  gem 'rspec-rails'
   gem 'factory_bot'
   gem 'factory_bot_rails'
+  gem 'rspec-rails'
 end
 
 group :development do
@@ -85,4 +84,5 @@ group :test do
   gem 'selenium-webdriver'
   gem 'vcr'
   gem 'webmock'
+  gem 'rubocop'
 end

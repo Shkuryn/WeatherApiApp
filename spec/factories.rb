@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :forecast do
     epoch_time { Faker::Number.number(digits: 10) }

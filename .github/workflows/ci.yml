@@ -31,3 +31,5 @@ jobs:
         run: bundle exec rspec -fd
         env:
           ACCUWEATHER_API_KEY: ${{ secrets.ACCUWEATHER_API_KEY }}
+      - name: Run rubocop
+        run: rubocop
