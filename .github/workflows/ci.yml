@@ -16,11 +16,6 @@ jobs:
         with:
           ruby-version: 3.2.2
 
-
-      - name: Display environment variables
-        run:
-           echo "Environment variables: ${{ toJson(env) }}"
-
       - name: Bundle install
         run: |
           gem install bundler
@@ -34,3 +29,5 @@ jobs:
 
       - name: Run RSpec
         run: bundle exec rspec -fd
+        env:
+          ACCUWEATHER_API_KEY: ${{ secrets.ACCUWEATHER_API_KEY }}
