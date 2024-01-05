@@ -11,12 +11,13 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
                         temperature: 10)
     end
     it 'returns the current temperature' do
-      pending('need rework')
+      expected_time = Time.current.beginning_of_hour.strftime('%Y-%m-%d %H:%M')
+
       get '/api/weather/current'
 
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
-      expect(body).to include(['2024-01-03 17:00', 10.0])
+      expect(body).to include([expected_time, 10.0])
     end
   end
 
