@@ -9,6 +9,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      memcached:
+        image: memcached:latest
+        ports:
+          - 11211:11211
+        options: --health-cmd="echo stats | nc localhost 11211"
+
     steps:
       - uses: actions/checkout@v3
 
