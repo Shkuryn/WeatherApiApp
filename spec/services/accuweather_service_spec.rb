@@ -19,9 +19,9 @@ RSpec.describe AccuweatherService do
       let!(:forecast1) { FactoryBot.create(:forecast, epoch_time: epochtime1, temperature: 10) }
       let!(:forecast2) { FactoryBot.create(:forecast, epoch_time: epochtime2, temperature: 15) }
 
-      it 'update temperature' do
+      it 'update temperature', :vcr do
         expect do
-          VCR.use_cassette('accuweather_service') do
+          VCR.use_cassette('accuweather_service', record: :all) do
             AccuweatherService.call
           end
         end.to change { Forecast.count }.from(2).to(24)

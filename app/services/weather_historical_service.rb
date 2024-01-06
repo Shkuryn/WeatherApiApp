@@ -15,19 +15,35 @@ class WeatherHistoricalService
     temperature
   end
 
-  def last(count_hours)
-    observations = Forecast.where('observation_time >= ?', count_hours.hours.ago).pluck(:observation_time, :temperature)
-    observations.map do |time, temperature|
-      [
-        time.strftime('%Y-%m-%d %H:%M'),
-        temperature.to_f
-      ]
-    end
+  def last(count_hours, from)
+    observations = fetch_observations(count_hours, from)
+
+    observations.empty? ? handle_empty_observations : format_observations(observations)
   end
 
   private
 
   def valid_operation?(operation)
     %i[max min avg].include?(operation.to_sym)
+  end
+
+  def fetch_observations(count_hours, from)
+    Forecast.where('observation_time >= ?', from - count_hours.hours)
+            .order(observation_time: :desc)
+            .first(count_hours)
+            .pluck(:observation_time, :temperature)
+  end
+
+  def handle_empty_observations
+    'not found'
+  end
+
+  def format_observations(observations)
+    observations.map do |time, temperature|
+      [
+        time.strftime('%Y-%m-%d %H:%M'),
+        temperature.to_f
+      ]
+    end
   end
 end

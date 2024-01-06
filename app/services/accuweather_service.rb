@@ -9,6 +9,10 @@ class AccuweatherService
     new.call
   end
 
+  def initialize
+    @dalli_client = Dalli::Client.new('localhost:11211')
+  end
+
   # rubocop:disable Metrics/AbcSize
   def call
     response.each do |weather|
@@ -18,8 +22,8 @@ class AccuweatherService
       Forecast
         .find_or_initialize_by(epoch_time:)
         .update!(temperature:, observation_time:)
-      Rails.cache.write(epoch_time.to_i, temperature)
     end
+    @dalli_client.flush_all
   end
   # rubocop:enable Metrics/AbcSize
 

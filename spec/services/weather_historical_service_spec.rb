@@ -61,7 +61,7 @@ RSpec.describe WeatherHistoricalService do
       end
 
       it 'returns recent observations' do
-        result = subject.last(1)
+        result = subject.last(1, Time.current)
 
         expect(result.size).to eq(1)
       end
@@ -69,9 +69,9 @@ RSpec.describe WeatherHistoricalService do
 
     context 'when no forecast' do
       it 'returns recent observations' do
-        result = subject.last(1)
+        result = subject.last(1, Time.current)
 
-        expect(result).to be_empty
+        expect(result).to eq('not found')
       end
     end
   end
