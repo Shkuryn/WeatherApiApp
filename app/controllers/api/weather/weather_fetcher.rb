@@ -4,10 +4,15 @@
 module API
   module Weather
     class WeatherFetcher < Grape::API
+      helpers do
+        def dalli_client
+          @dalli_client ||= Dalli::Client.new('localhost:11211')
+        end
+      end
       namespace 'weather' do
         desc 'Returns current temperature.'
         get :current do
-          WeatherHistoricalService.new.last(1)
+          dalli_client.fetch('current') { WeatherHistoricalService.new.last(1, Time.current) }
         end
 
         desc 'find closest temperature by passed timestamp'
@@ -15,26 +20,24 @@ module API
           requires :timestamp, type: Integer, desc: 'Timestamp to find temperature'
         end
         get 'by_time' do
-          timestamp = Time.at(params[:timestamp])
-
-          closest_temperature = Forecast.where('observation_time <= ?', timestamp).order(observation_time: :desc).first
-          error!('Temperature not found', 404) unless closest_temperature
-
-          { temperature: closest_temperature.temperature }
+          timestamp = Time.at(params[:timestamp]).beginning_of_hour
+          dalli_client.fetch("by_time#{timestamp}") do
+            { 'temperature': WeatherHistoricalService.new.last(1, timestamp) }
+          end
         end
 
         namespace 'historical' do
           get do
-            WeatherHistoricalService.new.last(24)
+            dalli_client.fetch('historical') { WeatherHistoricalService.new.last(24, Time.current) }
           end
           get :min do
-            { 'min': WeatherHistoricalService.new.aggregate_temperature(:min) }
+            dalli_client.fetch('min') { { 'min': WeatherHistoricalService.new.aggregate_temperature(:min) } }
           end
           get :max do
-            { 'max': WeatherHistoricalService.new.aggregate_temperature(:max) }
+            dalli_client.fetch('max') { { 'max': WeatherHistoricalService.new.aggregate_temperature(:max) } }
           end
           get :avg do
-            { 'average': WeatherHistoricalService.new.aggregate_temperature(:avg) }
+            dalli_client.fetch('avg') { { 'average': WeatherHistoricalService.new.aggregate_temperature(:avg) } }
           end
         end
       end

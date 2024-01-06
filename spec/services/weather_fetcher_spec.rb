@@ -24,7 +24,7 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
   describe 'GET /weather/by_time' do
     let!(:forecast) { FactoryBot.create(:forecast, observation_time: Time.current - 1.hour, temperature: 15) }
 
-    it 'finds the closest temperature by timestamp' do
+    it 'finds the closest temperature by timestamp', :aggregate_failures do
       timestamp = Time.current.to_i
 
       get "/api/weather/by_time?timestamp=#{timestamp}"
@@ -32,17 +32,19 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
       expect(response.status).to eq(200)
       body = JSON.parse(response.body)
       expect(body).to have_key('temperature')
-      expect(body['temperature']).to eq('15.0')
+      expect(body['temperature'].count).to eq(1)
+      expect(body['temperature'].first.last).to eq(15.0)
     end
 
-    it 'returns 404 if temperature not found for timestamp' do
-      timestamp = Time.current.to_i - 55_000
+    it 'returns temperature not found', :aggregate_failures do
+      timestamp = Time.current.to_i + 5_555_000
 
       get "/api/weather/by_time?timestamp=#{timestamp}"
 
-      expect(response.status).to eq(404)
-      body = JSON.parse(response.body)
-      expect(body['error']).to eq('Temperature not found')
+      expect(response.status).to eq(200)
+      expected_body = { 'temperature' => 'not found' }
+      parsed_body = JSON.parse(body)
+      expect(parsed_body).to eq(expected_body)
     end
   end
 

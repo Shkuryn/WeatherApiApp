@@ -9,6 +9,10 @@ class AccuweatherService
     new.call
   end
 
+  def initialize
+    @dalli_client = Dalli::Client.new('localhost:11211')
+  end
+
   # rubocop:disable Metrics/AbcSize
   def call
     response.each do |weather|
@@ -18,12 +22,17 @@ class AccuweatherService
       Forecast
         .find_or_initialize_by(epoch_time:)
         .update!(temperature:, observation_time:)
-      Rails.cache.write(epoch_time.to_i, temperature)
     end
+    clear_cache
   end
   # rubocop:enable Metrics/AbcSize
 
   private
+
+  def clear_cache
+    keys_to_delete = %w[current historical min max avg]
+    keys_to_delete.each { |k| @dalli_client.delete(k) }
+  end
 
   def api_url
     "#{BASE_URL}/currentconditions/v1/#{LOCATION_KEY}/historical/24"
