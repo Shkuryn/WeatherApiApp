@@ -3,5 +3,7 @@ AllCops:
     - 'bin/**/*'
     - 'config/**/*'
     - 'lib/tasks/auto_annotate_models.rake'
+    - 'spec/support/weather_data.rb'
+    - 'spec/services/accuweather_service_spec.rb'
 Style/Documentation:
   Enabled: false
