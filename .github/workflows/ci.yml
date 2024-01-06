@@ -11,7 +11,7 @@ jobs:
 
     services:
       memcached:
-        image: memcached:latest
+        image: memcached
         ports:
           - 11211:11211
         options: --health-cmd="echo stats | nc localhost 11211"
