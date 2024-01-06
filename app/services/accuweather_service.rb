@@ -23,11 +23,16 @@ class AccuweatherService
         .find_or_initialize_by(epoch_time:)
         .update!(temperature:, observation_time:)
     end
-    @dalli_client.flush_all
+    clear_cache
   end
   # rubocop:enable Metrics/AbcSize
 
   private
+
+  def clear_cache
+    keys_to_delete = %w[current historical min max avg]
+    keys_to_delete.each { |k| @dalli_client.delete(k) }
+  end
 
   def api_url
     "#{BASE_URL}/currentconditions/v1/#{LOCATION_KEY}/historical/24"
