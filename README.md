@@ -14,27 +14,28 @@ This is a weather statistics service using  https://developer.accuweather.com/ap
 
 
 # Usage:
-Clone repo:
+
+-  Clone repo:
 git clone git@github.com:Shkuryn/weather_api_app.git
-Go to the app folder:
+-  Go to the app folder:
 cd ./weather_api_app
-Create .env file
+- Create .env file
 sudo nano .env
 Add Accuweather Api Key
 ACCUWEATHER_API_KEY=YOUR_VALUE
 Add LOCATION_KEY=YOUR_VALUE (find your city location code  or by default will be used LOCATION_KEY=28580)
-Save .env file
+- Save .env file
 Ctrl+O Ctrl+X
-Run docker-dompose build
-sudo docker-compose build
-Create DB
+- Run docker-dompose build
+- sudo docker-compose build
+- Create DB
 sudo docker-compose run web bundle exec rails db:create db:migrate
-Build and spin up the server
-sudo docker-compose up --build
-Open the second terminal tab
-Run rails console
-sudo docker-compose exec web rails console
-Call Accuweather Cache Service
-AccuweatherCacheService.call
+- Build and spin up the server
+- sudo docker-compose up --build
+- Open the second terminal tab
+- Run rails console
+- sudo docker-compose exec web rails console
+- Call Accuweather Service
+AccuweatherService.call
 
 * ...
