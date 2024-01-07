@@ -5,11 +5,17 @@ This is a weather statistics service using  https://developer.accuweather.com/ap
 List of endpoints:
 
 /weather/current - Current temperature
+
 /weather/historical - Hourly temperature for the last 24 hours (https://developer.accuweather.com/accuweather-current-conditions-api/apis/get/currentconditions/v1/%7BlocationKey%7D/historical/24)
+
 /weather/historical/max - Maximum temperature for 24 hours
+
 /weather/historical/min - Minimum temperature for 24 hours
+
 /weather/historical/avg - Average temperature over 24 hours
+
 /weather/by_time - Find the temperature closest to the transmitted timestamp (for example, 1621823790 should return the temperature for 2021-05-24 08:00. From the available data, if there is no such time, return 404)
+
 /health - Backend status (You can always answer OK)
 
 # Usage:
