@@ -37,5 +37,3 @@ sudo docker-compose run web bundle exec rails db:create db:migrate
 - sudo docker-compose exec web rails console
 - Call Accuweather Service
 AccuweatherService.call
-
-* ...
