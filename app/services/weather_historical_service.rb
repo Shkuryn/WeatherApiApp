@@ -17,7 +17,6 @@ class WeatherHistoricalService
 
   def last(count_hours, from)
     observations = fetch_observations(count_hours, from)
-
     observations.empty? ? handle_empty_observations : format_observations(observations)
   end
 
@@ -35,7 +34,7 @@ class WeatherHistoricalService
   end
 
   def handle_empty_observations
-    'not found'
+    raise ActiveRecord::RecordNotFound, 'Temperature not Found'
   end
 
   def format_observations(observations)

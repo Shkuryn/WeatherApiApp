@@ -68,10 +68,10 @@ RSpec.describe WeatherHistoricalService do
     end
 
     context 'when no forecast' do
-      it 'returns recent observations' do
-        result = subject.last(1, Time.current)
+      let(:error_message) { 'Temperature not Found' }
 
-        expect(result).to eq('not found')
+      it 'raises ActiveRecord::RecordNotFound with specific message' do
+        expect { subject.last(1, Time.current) }.to raise_error(ActiveRecord::RecordNotFound, error_message)
       end
     end
   end

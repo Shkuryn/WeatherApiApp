@@ -41,8 +41,8 @@ RSpec.describe API::Weather::WeatherFetcher, type: :request do
 
       get "/api/weather/by_time?timestamp=#{timestamp}"
 
-      expect(response.status).to eq(200)
-      expected_body = { 'temperature' => 'not found' }
+      expect(response.status).to eq(404)
+      expected_body = { 'error' => 'Temperature not found' }
       parsed_body = JSON.parse(body)
       expect(parsed_body).to eq(expected_body)
     end
