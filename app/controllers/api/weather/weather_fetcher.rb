@@ -19,10 +19,14 @@ module API
         params do
           requires :timestamp, type: Integer, desc: 'Timestamp to find temperature'
         end
+
         get 'by_time' do
           timestamp = Time.at(params[:timestamp]).beginning_of_hour
           dalli_client.fetch("by_time#{timestamp}") do
             { 'temperature': WeatherHistoricalService.new.last(1, timestamp) }
+          rescue ActiveRecord::RecordNotFound
+            @dalli_client.delete("by_time#{timestamp}")
+            error!('Temperature not found', 404)
           end
         end
 
